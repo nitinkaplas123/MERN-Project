@@ -1,18 +1,20 @@
-require('dotenv').config();
-const express =require('express')
+require("dotenv").config({path:'./.env'})
+const express=require('express')
 const app=express()
-const PORT=8003
+require('./DB/conn')
 
-const mongoose=require('mongoose')
+const cors=require('cors')
+
+const users=require("./models/userSchema")
+const router=require("./routes/router")
 
 
-const DB="mongodb+srv://nitinkaplas90643:RFe8gGBzdzXtNRRC@nitingoogle.jtccuvy.mongodb.net/?retryWrites=true&w=majority"
-mongoose.connect(DB).then((res)=>{
-    console.log("Database is connected")
-}).catch((err)=>{
-    console.log(`error is : ${err}`)
-})
+app.use(cors()) // communication 
+app.use(express.json()) // body parser to get body from postman 
+app.use(router) // app.use pure app se use krna router ko
 
-app.listen(PORT,()=>{
+
+app.listen(process.env.PORT,()=>{
     console.log("running")
 })
+
